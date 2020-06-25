@@ -1,0 +1,5 @@
+{
+    "connectionString": "mongodb://localhost:27017/stock",
+    "secret": "This application is for library management"
+}
+  

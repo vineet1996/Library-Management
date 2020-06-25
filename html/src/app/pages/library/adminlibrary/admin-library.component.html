@@ -1,0 +1,37 @@
+<nb-card>
+    <nb-card-header>
+        <button  nbButton status="primary" (click)="addNewBook()">Add Book</button>
+    </nb-card-header>
+</nb-card>
+
+<div class="row col-sm-12" *ngIf="booksList.length > 0">
+    <div class="col-sm-4" *ngFor="let item of booksList">
+        <nb-card style="height: 30vh;">
+            <nb-card-header style="text-align: center;">
+                <h6>{{item.name}}</h6>
+            </nb-card-header>
+            <nb-card-body>
+                <div class="form-group row">
+                    <label for="inputname" class="label col-sm-3 col-form-label">Author</label>
+                    <div class="col-sm-9">{{item.author}}</div>
+                </div>
+                <div class="form-group row">
+                    <label for="inputname" class="label col-sm-3 col-form-label">Publish</label>
+                    <div class="col-sm-9">{{item.publish}}</div>
+                </div>
+                <div class="form-group row">
+                    <label for="inputname" class="label col-sm-3 col-form-label">Stock</label>
+                    <div class="col-sm-9">{{item.stock}}</div>
+                </div>
+                <div class="form-group row">
+                    <label for="inputname" class="label col-sm-3 col-form-label">Take Home</label>
+                    <div class="col-sm-9"><nb-checkbox [checked]=item.takehome disabled></nb-checkbox></div>
+                </div>
+            </nb-card-body>
+            <nb-card-footer align=right>
+                <button class="cancel" nbButton status="success" size='small' (click)="updateBook(item)">Update</button>
+                <button nbButton status="danger" size='small' (click)="deleteBook(item)">Delete</button>
+            </nb-card-footer>
+        </nb-card>
+    </div>
+</div>

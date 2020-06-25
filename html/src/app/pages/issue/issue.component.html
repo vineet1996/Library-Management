@@ -1,0 +1,8 @@
+<ng-container *ngIf="isadmin; else notAdmin">
+    <ngx-admin-issue></ngx-admin-issue>
+</ng-container>
+
+<ng-template #notAdmin>
+    <ngx-user-issue></ngx-user-issue>
+</ng-template>
+

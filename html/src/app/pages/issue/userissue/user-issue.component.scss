@@ -1,0 +1,33 @@
+.heading{
+    font-size: 17px;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.tableHead {
+    text-align: center;
+}
+
+.issuetable, .issueHead, .issueData {
+    border: 1px solid #00000017;
+    border-collapse: collapse;
+    margin-bottom: 10px;
+    width: auto;
+  }
+  .issueHead ,.issueData{
+    text-align: center;
+    padding: 15px;
+  }
+  
+  .full-width-field {
+    width: 100%;
+  }
+
+  .eachIssue {
+      cursor: pointer;
+  }
+
+  .eachIssue:hover {
+    background: #80808026;
+    outline: 1px solid blue;
+  }

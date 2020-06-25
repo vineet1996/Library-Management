@@ -1,0 +1,8 @@
+<ng-container *ngIf="isadmin; else notAdmin">
+    <ngx-admin-library  [booksList]='allBooks'></ngx-admin-library>
+</ng-container>
+
+<ng-template #notAdmin>
+    <ngx-user-library [booksList]='allBooks'></ngx-user-library>
+</ng-template>
+

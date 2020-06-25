@@ -1,0 +1,43 @@
+<nb-card size="medium">
+    <nb-card-header>New Book Details</nb-card-header>
+    <nb-card-body>
+        <form  [formGroup]="bookForm"  >
+          <div class="form-group row">
+            <label for="inputname" class="label col-sm-3 col-form-label">Name</label>
+            <div class="col-sm-9">
+              <input type="text" nbInput fullWidth id="inputname" formControlName="name" placeholder="name">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="inputauthor" class="label col-sm-3 col-form-label">Author</label>
+            <div class="col-sm-9">
+              <input type="text" nbInput fullWidth id="inputauthor" formControlName="author" placeholder="Kelly Rimmer ">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="inputpublish" class="label col-sm-3 col-form-label">Publish</label>
+            <div class="col-sm-9">
+              <input type="text" nbInput fullWidth id="inputpublish" formControlName="publish" placeholder="2019 Harlequin Enterprises, Limited">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="inputstock" class="label col-sm-3 col-form-label">Stock</label>
+            <div class="col-sm-9">
+              <input type="number" nbInput fullWidth id="inputstock" formControlName="stock" min="1">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-3 label">Take home</label>
+            <div class="col-sm-9">
+                <nb-checkbox formControlName='takehome'></nb-checkbox>
+            </div>
+          </div>
+        </form>
+      </nb-card-body>
+    <nb-card-footer align='right'>
+        <button class="cancel" nbButton status="danger" (click)="cancel()">Cancel</button>
+        <button nbButton status="success" (click)="addBook()"><span *ngIf="type == 'New'; else updateBtn">Create</span></button>
+        <ng-template #updateBtn>Update</ng-template>
+        
+    </nb-card-footer>
+</nb-card>

@@ -1,0 +1,14 @@
+{
+    "/authentication": {
+      "target": "http://localhost:3080",
+      "secure": false
+    },
+    "/book": {
+      "target": "http://localhost:3080",
+      "secure": false
+    },
+    "/socket.io": {
+      "target": "http://localhost:3080",
+      "secure": false
+    }
+  }
