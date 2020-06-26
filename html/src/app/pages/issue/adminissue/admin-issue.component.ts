@@ -21,11 +21,16 @@ export class AdminIssueComponent implements OnInit {
     this.issueService.adminIssueList.subscribe((data: any) => {
       if(data) this.requestList = data;
     })
+
+    this.issueService.updatedReqList().subscribe((data: any) => {
+      this.getAdminOldData();
+    });
   }
 
   approvalBook(issue, approval) {
     let title = "Accept the request of '"+ issue.book.name +"' by '"+issue.user.username+"' ?";
     if(!approval) title = "Decline the request of '"+ issue.book.name +"' by '"+issue.user.username+"' ?";
+    if(issue.returnrequest) title = "Accept return request of '"+ issue.book.name +"' by '"+issue.user.username+"' ?";
     this.dialogService.open(AlertDialogComponent,{
       context: {
         title: title,
@@ -34,8 +39,10 @@ export class AdminIssueComponent implements OnInit {
         if(data) {
           let approvalData = {
             issueDets: issue,
-            approval: approval
+            approval: approval,
+            returnreq: false,
           }
+          if(issue.returnrequest) approvalData.returnreq = true;
           this.issueService.approvalByAdmin(approvalData);
         }
       });

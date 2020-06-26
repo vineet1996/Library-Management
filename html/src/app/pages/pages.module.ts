@@ -14,7 +14,8 @@ import {
   NbDialogModule,
   NbInputModule,
   NbAlertModule,
-  NbRadioModule
+  NbRadioModule,
+  NbBadgeModule
 } from '@nebular/theme';
 
 import { ThemeModule } from '../@theme/theme.module';
@@ -54,6 +55,7 @@ import { AlertDialogComponent } from './alertdialog/alert-dialog.component';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    NbBadgeModule
   ],
   declarations: [
     PagesComponent,

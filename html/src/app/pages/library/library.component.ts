@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../../@service';
 import { LibraryService } from '../../@service/library.service';
+import { IssueService } from '../../@service/issue.service';
 
 
 @Component({
@@ -12,7 +13,7 @@ export class LibraryComponent implements OnInit  {
   allBooks:any = [];
   isadmin: boolean = false;
   
-  constructor(private authService: AuthenticationService, private libraryService: LibraryService, ) {
+  constructor(private authService: AuthenticationService, private libraryService: LibraryService, private issueService: IssueService ) {
     if(this.authService.isAdmin) {
       this.isadmin = true;
     }
@@ -20,6 +21,13 @@ export class LibraryComponent implements OnInit  {
   }
 
   ngOnInit() {
+    this.getLibrary();
+    this.issueService.updateAllUsers().subscribe(data => {
+      this.getLibrary();
+    })
+  }
+
+  getLibrary() {
     this.libraryService.getAllBooks().subscribe((data:any) => {
       this.allBooks = data;
     })

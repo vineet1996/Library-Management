@@ -17,15 +17,18 @@ module.exports = {
     adminAllOldData
 };
 
+// To get all request calls to admin of issue and acceptance of books.
 async function requestList() {
     let allReq = await Issue.aggregate([
-        { $match: { pending: true } },
+        { $match: { $or: [{pending: true}, {returnrequest: true}]  } },
         {
             $set: {
+                // setting string to mongo Object id for comparing below lookup query.
                 userId: { $toObjectId: "$userId" },
                 bookId: { $toObjectId: "$bookId" },
             },
         },
+        // get user details of particular issue.
         {
             $lookup: {
                 from: 'users',
@@ -35,6 +38,7 @@ async function requestList() {
             }
 
         },
+        // get book details of particular issue.
         {
             $lookup: {
                 from: 'books',
@@ -44,64 +48,41 @@ async function requestList() {
             }
 
         },
-        { '$unwind': '$user' },
+        // as there will b single object, unwind will give just object instead of array of object.
+        { '$unwind': '$user' }, 
         { '$unwind': '$book' },
     ]);
     return allReq;
 }
 
+// save new book issue request to db 
 async function newReqIssue(data) {
-    console.log(data);
     let reqIssue = new Issue({
         userId: data.userId,
         bookId: data.bookId,
         takehome: data.takeHome,
         requesttime: moment().format()
     })
-    let newReq = await reqIssue.save();
-    let toUser = await userrequestList({id:reqIssue.userId});
-    let toAdmin = await getSingleIssueDetails(newReq);
+    let newReq = await reqIssue.save(); // saving new issue request.
+    let toUser = await userrequestList({id:reqIssue.userId}); // getting updated request list of users.
+    let toAdmin = await requestList(); // getting updated request list of admin. 
     return {toUser: toUser, toAdmin: toAdmin} ;
 }
 
-async function getSingleIssueDetails(data) {
-    let issueDets = await Issue.aggregate([
-        { $match: { _id: mongoose.Types.ObjectId(data._id) } },
-        {
-            $set: {
-                userId: { $toObjectId: "$userId" },
-                bookId: { $toObjectId: "$bookId" },
-            },
-        },
-        {
-            $lookup: {
-                from: 'users',
-                localField: 'userId',
-                foreignField: '_id',
-                as: 'user'
-            }
 
-        },
-        {
-            $lookup: {
-                from: 'books',
-                localField: 'bookId',
-                foreignField: '_id',
-                as: 'book'
-            }
-
-        },
-        { '$unwind': '$user' },
-        { '$unwind': '$book' },
-    ]);
-    return issueDets[0];
-}
-
+/// make changes in the db after admin approval of the user request.
 async function approvalRequest(data) {
     let issueDets = data.issueDets;
-    let apprData = await Issue.updateOne({_id: issueDets._id}, {$set: {pending: false, approval: data.approval, issuedtime: moment().format()}})
     if(data.approval){
-        let updateBook = await Book.updateOne({_id: issueDets.book._id}, {$inc: {stock: -1}});
+        if(data.returnreq) {
+            let apprData = await Issue.updateOne({_id: issueDets._id}, {$set: {returnrequest: false, returntime: moment().format()}});
+            let updateretBook = await Book.updateOne({_id: issueDets.book._id}, {$inc: {stock: 1}});
+        }
+        else {
+            let apprData = await Issue.updateOne({_id: issueDets._id}, {$set: {pending: false, approval: data.approval, issuedtime: moment().format()}});
+            let updateBook = await Book.updateOne({_id: issueDets.book._id}, {$inc: {stock: -1}});
+        }
+        
     } 
     let toAdmin = await requestList();
     let toUserReqList = await userrequestList({id: issueDets.userId});
@@ -109,9 +90,10 @@ async function approvalRequest(data) {
     return {toAdmin, toUserReqList, toUserIssuedList};
 }  
 
+// particular user's request list of issue and returning request of books
 async function userrequestList(user) {
     let allReq = await Issue.aggregate([
-        { $match: {userId:user.id, pending: true } },
+        { $match: {userId:user.id,  $or: [{pending: true}, {returnrequest: true}] } },
         {
             $set: {
                 bookId: { $toObjectId: "$bookId" },
@@ -131,6 +113,7 @@ async function userrequestList(user) {
     return allReq;
 }
 
+// User deleting the book issue request
 async function deleteRequest(data) {
     issueDets = data.issueDets;
     user = data.user;
@@ -140,6 +123,7 @@ async function deleteRequest(data) {
     return {toUser: toUser, toAdmin: toAdmin} ;
 }
 
+// Getting user's history records on book issued.
 async function getUserDataIssue(data) {
     let allIssuedList = await Issue.aggregate([
         { $match: {userId:data.id, pending: false, } },
@@ -164,16 +148,23 @@ async function getUserDataIssue(data) {
 
 
 async function userReturnBook(issue) {
-    let returnUpdate = await Issue.updateOne({_id: issue._id}, {$set: {returntime: moment().format()}});
-    let updateBook = await Book.updateOne({_id: issue.book._id}, {$inc: {stock: 1}});
-    return getUserDataIssue({id: issue.userId});
+    // let returnUpdate = await Issue.updateOne({_id: issue._id}, {$set: {returntime: moment().format()}});
+    // let updateBook = await Book.updateOne({_id: issue.book._id}, {$inc: {stock: 1}});
+    let returnUpdate = await Issue.updateOne({_id: issue._id}, {$set: {returnrequest: true}});
+    let toUser = await userrequestList({id:issue.userId}); // getting updated request list of users.
+    let toAdmin = await requestList(); // getting updated request list of admin. 
+    return {toAdmin, toUser};
 }
 
+
+// user deleting his/her old records.
 async function deleteOldIssuedBook(issue) {
     let deleteIssue = await Issue.remove({_id: issue._id});
     return getUserDataIssue({id: issue.userId});
 }
 
+
+// Getting all users book issue history data to admin.
 async function adminAllOldData() {
     let allReq = await Issue.aggregate([
         { $match: { pending: false } },
@@ -204,6 +195,5 @@ async function adminAllOldData() {
         { '$unwind': '$user' },
         { '$unwind': '$book' },
     ]);
-    console.log(allReq)
     return allReq;
 }

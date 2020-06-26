@@ -42,8 +42,9 @@
                         <td class="issueData "> <span *ngIf="item.returntime else noData">{{ item.returntime }}</span></td>
                         <td class="issueData " >
                             <div style="display: flex;">
-                                <button (click)="returnIssue(item)" *ngIf="!item.returntime && item.approval" nbButton status="primary" title="Return Book" shape='round' ghost>Return</button>
+                                <button (click)="returnIssue(item)" *ngIf="!item.returntime && item.approval && !item.returnrequest" nbButton status="primary" title="Return Book" shape='round' ghost>Return</button>
                                 <button (click)="deleteIssue(item)" *ngIf="item.returntime || !item.approval" nbButton status="danger" shape='round' ghost>Delete</button>
+                                <button *ngIf="item.returnrequest" nbButton status="danger" shape='round' ghost disabled>Pending</button>
                             </div>
                         </td>
                     </tr>

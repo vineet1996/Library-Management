@@ -8,6 +8,7 @@ const issue = new Schema({
     pending: {type: Boolean, default: true},
     approval: Boolean,
     requesttime: Date,
+    returnrequest: Boolean,
     issuedtime: Date,
     returntime: Date,
 });

@@ -28,9 +28,14 @@ export class UserIssueComponent implements OnInit {
       this.issueService.userIssueList.next(data.toUserReqList);
       this.issuedList = data.toUserIssuedList;
       this.filterData();
-    })
+    });
+
+    this.issueService.userUpdatedReqList().subscribe(data => {
+      this.getUserAllIssuedList();
+    });
   }
 
+  // deleting book issue request 
   deleteRequest(issue) {
     this.dialogService.open(AlertDialogComponent,{
       context: {
@@ -47,6 +52,7 @@ export class UserIssueComponent implements OnInit {
       });
   }
 
+  // getting users history data
   getUserAllIssuedList(){
     this.issueService.getUserDataList(this.authService.currentUserValue).subscribe((data:any) => {
       this.issuedList = data;
@@ -54,6 +60,7 @@ export class UserIssueComponent implements OnInit {
     })
   }
 
+  // changing format of timestamp to local time.
   filterData() {
      for(let item of this.issuedList) {
        item.requesttime = moment(item.requesttime).format('YYYY-MM-DD (HH:mm)');
@@ -62,6 +69,7 @@ export class UserIssueComponent implements OnInit {
      }
   }
 
+  // deleting old data 
   deleteIssue(issue) {
     this.dialogService.open(AlertDialogComponent,{
       context: {
@@ -78,6 +86,7 @@ export class UserIssueComponent implements OnInit {
       });
   }
 
+  // book return request to admin.
   returnIssue(issue) {
     this.dialogService.open(AlertDialogComponent,{
       context: {
@@ -85,11 +94,7 @@ export class UserIssueComponent implements OnInit {
       },})
       .onClose.subscribe((data:any) => {
         if(data) {
-          this.issueService.userReturnBook(issue).subscribe((data: any) => {
-            this.issuedList = data;
-            this.filterData();
-            this.issueService.showToast('success', "Book Returned", "Successful");
-          });
+          this.issueService.userReturnBook(issue);
         }
       });
   }

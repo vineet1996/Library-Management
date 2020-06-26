@@ -40,30 +40,41 @@ export class PagesComponent implements OnInit {
 
   adminSocketsSubscribes() {
     //admin receiving any request from users;
-    this.issueService.receiveRequest().subscribe(data => {
-      let currentList = this.issueService.currentAdminIssueList;
-      currentList.push(data);
-      this.issueService.adminIssueList.next(currentList);
-      this.issueService.showToast('primary', data.book.name, "New Request");
-    });
-
     this.issueService.updatedReqList().subscribe((data: any) => {
-      console.log(data);
-      this.issueService.adminIssueList.next(data);
+      this.issueService.adminIssueList.next(data.result);
+      switch(data.type) {
+        case 'new': this.issueService.showToast('primary',"Book Issue request", "New Request");
+                    break;
+        case 'approval': this.issueService.showToast('success',"Approval status", "Submitted successfully");
+                          break;
+        case 'delete': this.issueService.showToast('warning',"Request List is updated", "Check updated list");
+                      break;
+        case 'return': this.issueService.showToast('primary',"Return book request", "Request");
+                      break;
+      }
     })
   }
 
   userSocketsSubscribes() {
     this.issueService.userUpdatedReqList().subscribe(data => {
       let result = data.result;
-      this.issueService.userIssueList.next(result.toUser);
-      if(data.type == 'new') this.issueService.showToast('success', result.toAdmin.book.name, "Request Sent");
-      if(data.type == 'delete') this.issueService.showToast('success', "Deleted Request", "Successfull");
+      this.issueService.userIssueList.next(result);
+      switch(data.type) {
+        case 'new': this.issueService.showToast('success',"Book Issue", "Request Sent");
+                    break;
+        case 'delete': this.issueService.showToast('success', "Deleted Request", "Successfull");
+                        break;
+        case 'return': this.issueService.showToast('success', "Return Request", "Successfull");
+                        break
+      }
     });
 
     this.issueService.approvalReceiveUser().subscribe((data:any) => {
       this.issueService.userIssueList.next(data.toUserReqList);
-      if(data.approval) this.issueService.showToast('success', 'Book is approved', 'successfull')
+      if(data.approval ) {
+        if(data.return) this.issueService.showToast('success', 'Return Book is approved', 'successfull')  
+        else this.issueService.showToast('success', 'Book issue is approved', 'successfull')
+      } 
       else this.issueService.showToast('warning', 'Book is declined', 'Rejected')
     })
   }

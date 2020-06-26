@@ -1,29 +1,39 @@
 <div class="row col-sm-12">
-    <div class="col-sm-5">
+    <div class="col-sm-6">
         <nb-card style="height: 80vh;">
             <nb-card-header>
                 <div class="heading">Request List</div>
-                <hr>
-                <div class="row col-sm-12" style="padding: 0;">
-                    <div class="col-sm-3 offset-1 ">User</div>
-                    <div class="col-sm-3 offset-1 ">Book</div>
-                    <div class="col-sm-3 offset-1 ">Action</div>
-                    
-                  </div>
             </nb-card-header>
-            <nb-list>
-                <nb-list-item *ngFor="let item of requestList">
-                  <div class="row col-sm-12" style="padding: 0;">
-                    <div class="col-sm-3 tableHead">{{ item.user.username }}</div>
-                    <div class="col-sm-5 tableHead">{{ item.book.name }}</div>
-                    <div class="col-sm-2 tableHead"><button (click)="approvalBook(item, false)" nbButton status="danger" shape='round' ghost><nb-icon icon="times" pack='solid'></nb-icon></button></div>
-                    <div class="col-sm-2 tableHead"> <button (click)="approvalBook(item, true)" nbButton status="success" shape='round' ghost><nb-icon icon="check" pack='solid'></nb-icon></button></div>
-                  </div>
-                </nb-list-item>
-            </nb-list>
+            <nb-card-body>
+                <table class="issuetable" style="width: 100%;">
+                    <tr>
+                        <th class="issueHead">User</th>
+                        <th class="issueHead">Book</th>
+                        <th class="issueHead">Take Home</th>
+                        <th class="issueHead">type</th>
+                        <th class="issueHead">Action</th>
+                    </tr>
+                    <tr *ngFor="let item of requestList; " class="eachIssue">
+                        <td class="issueData">{{ item.user.username }}</td>
+                        <td class="issueData">{{ item.book.name }}</td>
+                        <td class="issueData "> <span *ngIf="item.takehome; else printNo"><nb-icon icon="check" status="success" pack='solid'></nb-icon></span> </td>
+                        <td class="issueData "> <span *ngIf="item.pending else returnreq">Issue</span> </td>
+                        <td class="issueData "> 
+                            <div style="display: flex;">
+                                <button (click)="approvalBook(item, false)" *ngIf="item.pending" nbButton status="danger" shape='round' ghost><nb-icon icon="times" pack='solid'></nb-icon></button>
+                                <button (click)="approvalBook(item, true)" nbButton status="success" shape='round' ghost><nb-icon icon="check" pack='solid'></nb-icon></button>
+                            </div>
+                        </td>
+                    </tr>
+                    <ng-template #printNo><nb-icon icon="times" status="danger" pack='solid'></nb-icon></ng-template>
+                    <ng-template #returnreq>Return</ng-template>
+                    
+                    
+                </table>
+            </nb-card-body>
         </nb-card>
     </div>
-    <div class="col-sm-7">
+    <div class="col-sm-6">
       <nb-card style="height: 80vh;">
           <nb-card-header>
               <div class="heading">Issued List</div>
@@ -41,12 +51,12 @@
                   <tr *ngFor="let item of issuedList; " class="eachIssue">
                       <td class="issueData">{{ item.user.username }}</td>
                       <td class="issueData">{{ item.book.name }}</td>
-                      <td class="issueData "> <span *ngIf="item.takehome; else printNo">Yes</span> </td>
-                      <td class="issueData "> <span *ngIf="item.approval; else printNo">Yes</span> </td>
+                      <td class="issueData "> <span *ngIf="item.takehome; else printNo"><nb-icon icon="check" status="success" pack='solid'></nb-icon></span> </td>
+                      <td class="issueData "> <span *ngIf="item.approval; else printNo"><nb-icon icon="check" status="success" pack='solid'></nb-icon></span> </td>
                       <td class="issueData "> <span *ngIf="item.approval else noData">{{ item.issuedtime }}</span> </td>
                       <td class="issueData "> <span *ngIf="item.returntime else noData">{{ item.returntime }}</span></td>
                   </tr>
-                  <ng-template #printNo>No</ng-template>
+                  <ng-template #printNo><nb-icon icon="times" status="danger" pack='solid'></nb-icon></ng-template>
                   <ng-template #noData>-</ng-template>
                   
                   

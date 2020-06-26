@@ -24,7 +24,6 @@ export class AdminLibraryComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.booksList);
   }
 
   addNewBook() {
@@ -35,7 +34,6 @@ export class AdminLibraryComponent implements OnInit {
       },})
       .onClose.subscribe((data:any) => {
         if(data) {
-          console.log(data);
           this.libraryService.createBook(data).subscribe((data: any) => {
             this.booksList = data;
             this.showToast('success', "New Book created", "Successfull!");
