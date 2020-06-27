@@ -116,7 +116,7 @@ export class UserIssueComponent implements OnInit {
   checktime() {
     const currentTime = moment();
     const startTime = moment("10:00", 'HH:mm'); // Start time fixed to 10:00AM
-    const endTime = moment("20:00", 'HH:mm'); // End time fixed to 17:00 (5:00 PM)
+    const endTime = moment("17:00", 'HH:mm'); // End time fixed to 17:00 (5:00 PM)
     return currentTime.isBetween(startTime, endTime); // Boolean value if return time is between 10:00 AM and 5:00 PM
   }
 
@@ -124,7 +124,7 @@ export class UserIssueComponent implements OnInit {
   oneDayReturnCheck(issue) {
     const currentTime = moment();
     const getDate = moment(new Date(issue.issuedtime)).format("YYYY-MM-DD"); // Getting issued date
-    const expectedReturnTime = moment(getDate+' 20:00', 'YYYY-MM-DD HH:mm').format(); // Fixing boundry to 5:00 PM
+    const expectedReturnTime = moment(getDate+' 17:00', 'YYYY-MM-DD HH:mm').format(); // Fixing boundry to 5:00 PM
     return currentTime.isAfter(expectedReturnTime) ; // Boolean value return if return time exceeds issued date 5:00 PM
   }
 
