@@ -10,30 +10,32 @@
             </nb-card-body>
         </nb-card>
     </div>
-    <div class="col-sm-4" *ngFor="let item of booksList">
-        <nb-card style="height: 30vh;">
-            <nb-card-header style="text-align: center;">
-                <nb-badge *ngIf="item.stock == 0" text="Out of stock" status="danger"  position="top right"></nb-badge>
-                <h6>{{item.name}}</h6>
-            </nb-card-header>
-            <nb-card-body>
-                <div class="form-group row">
-                    <label for="inputname" class="label col-sm-3 col-form-label">Author</label>
-                    <div class="col-sm-9">{{item.author}}</div>
-                </div>
-                <div class="form-group row">
-                    <label for="inputname" class="label col-sm-3 col-form-label">Publish</label>
-                    <div class="col-sm-9">{{item.publish}}</div>
-                </div>
-                <div class="form-group row">
-                    <label for="inputname" class="label col-sm-3 col-form-label">Stock</label>
-                    <div class="col-sm-9">{{item.stock}}</div>
-                </div>
-            </nb-card-body>
-            <nb-card-footer align=right>
-                <button class="cancel" nbButton status="success" size='small' *ngIf="item.takehome" (click)="issueBook(item, true)" [disabled]="item.stock == 0"  >Take Home</button>
-                <button nbButton status="primary" size='small' (click)="issueBook(item, false)" [disabled]="item.stock == 0"  >Read</button>
-            </nb-card-footer>
-        </nb-card>
+    <div class="col-sm-12" style="height: 67vh;overflow: scroll;">
+        <div class="col-sm-4" *ngFor="let item of booksList">
+            <nb-card style="height: 30vh;">
+                <nb-card-header style="text-align: center;">
+                    <nb-badge *ngIf="item.stock == 0" text="Out of stock" status="danger"  position="top right"></nb-badge>
+                    <h6>{{item.name}}</h6>
+                </nb-card-header>
+                <nb-card-body>
+                    <div class="form-group row">
+                        <label for="inputname" class="label col-sm-3 col-form-label">Author</label>
+                        <div class="col-sm-9">{{item.author}}</div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputname" class="label col-sm-3 col-form-label">Publish</label>
+                        <div class="col-sm-9">{{item.publish}}</div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputname" class="label col-sm-3 col-form-label">Stock</label>
+                        <div class="col-sm-9">{{item.stock}}</div>
+                    </div>
+                </nb-card-body>
+                <nb-card-footer align=right>
+                    <button class="cancel" nbButton status="success" size='small' *ngIf="item.takehome" (click)="issueBook(item, true)" [disabled]="item.stock == 0"  >Take Home</button>
+                    <button nbButton status="primary" size='small' (click)="issueBook(item, false)" [disabled]="item.stock == 0"  >Read</button>
+                </nb-card-footer>
+            </nb-card>
+        </div>
     </div>
 </div>

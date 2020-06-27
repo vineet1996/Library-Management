@@ -43,6 +43,6 @@ async function searchResults(str) {
                                         {author: {$regex: str, $options: 'i'}},
                                         {publish: {$regex: str, $options: 'i'}}
                                     ]
-                                });
+                                }).sort( { name: 1 } );
     return searchres;
 }
