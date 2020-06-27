@@ -70,7 +70,7 @@ export class UserLibraryComponent  implements OnInit{
   checktime() {
     const currentTime = moment().format();
     const startTime = moment("10:00", 'HH:mm').format(); // start time fixed to 10:00AM
-    const endTime = moment("15:00", 'HH:mm').format(); // end time fixed to 15:00 (3:00 PM)
+    const endTime = moment("20:00", 'HH:mm').format(); // end time fixed to 15:00 (3:00 PM)
     return moment(currentTime).isBetween(startTime, endTime);
   }
 

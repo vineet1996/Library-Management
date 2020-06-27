@@ -12,7 +12,7 @@ module.exports = {
 
 // Function to get all books from db.
 async function getAllBooks() {
-    let allBooks = await Book.find();
+    let allBooks = await Book.find().sort( { name: 1 } );
     return allBooks;
 }
 

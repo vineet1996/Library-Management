@@ -51,7 +51,8 @@ async function requestList() {
         // As there will be single object, unwind will give just object instead of array of object.
         { '$unwind': '$user' }, 
         { '$unwind': '$book' },
-    ]);
+        
+    ]).sort( { _id: -1 } );
     return allReq;
 }
 
@@ -109,7 +110,7 @@ async function userrequestList(user) {
 
         },
         { '$unwind': '$book' },
-    ]);
+    ]).sort( { _id: -1 } );
     return allReq;
 }
 
@@ -142,7 +143,7 @@ async function getUserDataIssue(data) {
 
         },
         { '$unwind': '$book' },
-    ]);
+    ]).sort( { _id: -1 } );
     return allIssuedList
 }
 
@@ -192,6 +193,6 @@ async function adminAllOldData() {
         },
         { '$unwind': '$user' },
         { '$unwind': '$book' },
-    ]);
+    ]).sort( { _id: -1 } );
     return allReq;
 }

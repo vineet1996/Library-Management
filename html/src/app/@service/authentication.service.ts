@@ -18,7 +18,7 @@ export class AuthenticationService {
     public currentUser: Observable<any>;
     public forgotPassword: BehaviorSubject<any> =new BehaviorSubject<any>(false);
     constructor(private http: HttpClient,private router: Router) {
-        this.currentUserSubject = new BehaviorSubject<any>(JSON.parse(localStorage.getItem('currentNGOUser')));
+        this.currentUserSubject = new BehaviorSubject<any>(JSON.parse(localStorage.getItem('currentLIBUser')));
         this.currentUser = this.currentUserSubject.asObservable();
     }
 
@@ -37,7 +37,7 @@ export class AuthenticationService {
             // store user details and jwt token in local storage to keep user logged in between page refreshes
             if(data.success) {
                 this.currentUserSubject.next(data.user);
-                localStorage.setItem('currentNGOUser', JSON.stringify(data.user));
+                localStorage.setItem('currentLIBUser', JSON.stringify(data.user));
             }
             return data;
         }));
@@ -45,7 +45,7 @@ export class AuthenticationService {
 
     // Service for user or admin logout.
     logout() {
-        localStorage.removeItem('currentNGOUser');
+        localStorage.removeItem('currentLIBUser');
         this.currentUserSubject.next(null);
     }
 
@@ -71,7 +71,7 @@ export class AuthenticationService {
                 let currentVal = this.currentUserValue;
                 currentVal.membership = data.user.membershipdays;
                 this.currentUserSubject.next(currentVal);
-                localStorage.setItem('currentNGOUser', JSON.stringify(currentVal));
+                localStorage.setItem('currentLIBUser', JSON.stringify(currentVal));
             }
         })
     }
