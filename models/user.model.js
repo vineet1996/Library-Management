@@ -7,6 +7,7 @@ const user = new Schema({
     mobile: String,
     gender: String,
     membershipdays: Number,
+    referencedate: Date,
     readinghours: Number,
     isadmin: {type: Boolean, default: false},
     username: {type: String, required: true},

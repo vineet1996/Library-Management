@@ -3214,6 +3214,26 @@ class AuthenticationService {
         localStorage.removeItem('currentNGOUser');
         this.currentUserSubject.next(null);
     }
+    getUserDets() {
+        return this.http.post('/authentication/getUserDetails', this.currentUserValue, this.httpOptions);
+    }
+    userUpdateDetails(data) {
+        return this.http.post('/authentication/updateUser', data, this.httpOptions);
+    }
+    userpasswordReset(data) {
+        return this.http.post('/authentication/passwordReset', data, this.httpOptions);
+    }
+    reduceMemberShipDays() {
+        this.http.post('/authentication/updateMembership', this.currentUserValue, this.httpOptions).subscribe((data) => {
+            if (data && data.user) {
+                console.log(data);
+                let currentVal = this.currentUserValue;
+                currentVal.membership = data.user.membershipdays;
+                this.currentUserSubject.next(currentVal);
+                localStorage.setItem('currentNGOUser', JSON.stringify(currentVal));
+            }
+        });
+    }
 }
 AuthenticationService.ɵfac = function AuthenticationService_Factory(t) { return new (t || AuthenticationService)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"])); };
 AuthenticationService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjectable"]({ token: AuthenticationService, factory: AuthenticationService.ɵfac, providedIn: 'root' });
@@ -3510,9 +3530,9 @@ function HeaderComponent_nb_action_9_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](1, "nb-user", 9);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 } if (rf & 2) {
-    const ctx_r1697 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
+    const ctx_r11601 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("nbContextMenu", ctx_r1697.userMenu)("onlyPicture", ctx_r1697.userPictureOnly)("name", ctx_r1697.user == null ? null : ctx_r1697.user.username)("picture", ctx_r1697.user == null ? null : ctx_r1697.user.picture);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("nbContextMenu", ctx_r11601.userMenu)("onlyPicture", ctx_r11601.userPictureOnly)("name", ctx_r11601.user == null ? null : ctx_r11601.user.username)("picture", ctx_r11601.user == null ? null : ctx_r11601.user.picture);
 } }
 const _c0 = function () { return ["view", "user"]; };
 class HeaderComponent {
@@ -3549,10 +3569,8 @@ class HeaderComponent {
         this.currentTheme = 'default';
         this.userMenu = [];
         this.badgeVal = '';
-        authService.currentUserSubject.subscribe((data) => {
-            if (data && !data.isadmin)
-                this.userMenu.push({ title: 'Profile' });
-        });
+        if (!this.authService.isAdmin)
+            this.userMenu.push({ title: 'Profile' });
         this.userMenu.push({ title: 'Log out' });
         if (authService.isAdmin)
             this.adminFuntCall();
@@ -3667,7 +3685,7 @@ HeaderComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineCo
 /*!********************************************!*\
   !*** ./src/app/@theme/components/index.ts ***!
   \********************************************/
-/*! exports provided: FooterComponent, SearchInputComponent, TinyMCEComponent, HeaderComponent */
+/*! exports provided: HeaderComponent, FooterComponent, SearchInputComponent, TinyMCEComponent */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

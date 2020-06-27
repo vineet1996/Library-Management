@@ -33,6 +33,7 @@ import { UserLibraryComponent } from './library/userlibrary/user-library.compone
 import { AddBookComponent } from './addbookdialog/add-book.component';
 import { CommonModule } from '@angular/common';
 import { AlertDialogComponent } from './alertdialog/alert-dialog.component';
+import { ReturnDialogComponent } from './returnalertdialog/return-alert.component';
 
 @NgModule({
   imports: [
@@ -67,7 +68,8 @@ import { AlertDialogComponent } from './alertdialog/alert-dialog.component';
     AdminLibraryComponent,
     UserLibraryComponent,
     AddBookComponent,
-    AlertDialogComponent
+    AlertDialogComponent,
+    ReturnDialogComponent
   ],
   entryComponents: [
     LibraryComponent,
@@ -78,7 +80,8 @@ import { AlertDialogComponent } from './alertdialog/alert-dialog.component';
     AdminLibraryComponent,
     UserLibraryComponent,
     AddBookComponent,
-    AlertDialogComponent
+    AlertDialogComponent,
+    ReturnDialogComponent
   ]
 })
 export class PagesModule {

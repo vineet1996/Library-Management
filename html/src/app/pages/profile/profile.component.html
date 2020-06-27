@@ -1,0 +1,87 @@
+<div class="row">
+    <div class="col-sm-7">
+        <nb-card>
+            <nb-card-header>
+                <div class="heading">Profile Details</div>
+            </nb-card-header>
+            <nb-card-body *ngIf="updatingUserData">
+                <div class="form-group row">
+                    <label for="inputName" class="label col-sm-3 col-form-label">Name</label>
+                    <div class="col-sm-9">
+                        <input type="text" nbInput fullWidth id="inputName" [(ngModel)]="updatingUserData.name">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="inputEmail1" class="label col-sm-3 col-form-label">Email</label>
+                    <div class="col-sm-9">
+                        <input type="email" nbInput fullWidth id="inputEmail1" disabled
+                            [(ngModel)]="updatingUserData.email">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="inputMobile" class="label col-sm-3 col-form-label">Mobile</label>
+                    <div class="col-sm-9">
+                        <input type="text" nbInput fullWidth id="inputMobile" [(ngModel)]="updatingUserData.mobile">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="inputGender" class="label col-sm-3 col-form-label">Gender</label>
+                    <div class="col-sm-9">
+                        <input type="text" nbInput fullWidth id="inputGender" [(ngModel)]="updatingUserData.gender"
+                            disabled>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="inputMember" class="label col-sm-3 col-form-label">Membership (In days)</label>
+                    <div class="col-sm-9">
+                        <input type="number" nbInput fullWidth id="inputMember"
+                            [(ngModel)]="updatingUserData.membershipdays">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="inputRead" class="label col-sm-3 col-form-label">Reading Hours (In hrs)</label>
+                    <div class="col-sm-9">
+                        <input type="number" min="1" max="7" nbInput fullWidth id="inputRead"
+                            [(ngModel)]="updatingUserData.readinghours">
+                    </div>
+                </div>
+            </nb-card-body>
+            <nb-card-footer align='right'>
+                <button nbButton status="success" size='small' (click)="updateDetails()">Update</button>
+            </nb-card-footer>
+        </nb-card>
+    </div>
+    <div class="col-sm-5">
+        <nb-card>
+            <nb-card-header>
+                <div class="heading">Password Change</div>
+            </nb-card-header>
+            <nb-card-body *ngIf="updatingUserData">
+                <form (ngSubmit)="setPassword()" [formGroup]="myForm" aria-labelledby="title">
+                    <div class="form-group row">
+                        <label for="inputpass" class="label col-sm-3 col-form-label">New Password</label>
+                        <div class="col-sm-9">
+                            <input type="password" formControlName="newPassword" nbInput fullWidth id="inputpass">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputRepass" class="label col-sm-3 col-form-label">Re-type Password</label>
+                        <div class="col-sm-9">
+                            <input type="password" formControlName="retypeNew" nbInput fullWidth id="inputRepass">
+                            <ng-container *ngIf="myForm.hasError('notMatch','retypeNew')">
+                                <p class="caption status-danger">
+                                    Password does not match!
+                                </p>
+                            </ng-container>
+                        </div>
+
+                    </div>
+                </form> 
+            </nb-card-body>
+            <nb-card-footer align='right'>
+                <button nbButton status="success" size='small' [disabled]="!myForm.hasError('doesMatch','retypeNew')"
+                    (click)="passwordReset()">Password Change</button>
+            </nb-card-footer>
+        </nb-card>
+    </div>
+</div>

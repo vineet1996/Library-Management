@@ -1,0 +1,10 @@
+<nb-card >
+    <nb-card-body>
+       <div>{{title}}</div>
+       <span *ngIf="note" class="noteClass">*Note: {{note}}</span>
+    </nb-card-body>
+    <nb-card-footer align='right'>
+        <button class="cancel" nbButton status="danger" size='small' (click)="cancel(false)">Cancel</button>
+        <button nbButton status="success" size='small' (click)="cancel(true)">Yes</button>
+    </nb-card-footer>
+</nb-card>

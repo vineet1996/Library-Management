@@ -46,4 +46,28 @@ export class AuthenticationService {
         localStorage.removeItem('currentNGOUser');
         this.currentUserSubject.next(null);
     }
+
+    getUserDets() {
+        return this.http.post('/authentication/getUserDetails', this.currentUserValue, this.httpOptions);
+    }
+
+    userUpdateDetails(data) {
+        return this.http.post('/authentication/updateUser', data, this.httpOptions);
+    }
+
+    userpasswordReset(data) {
+        return this.http.post('/authentication/passwordReset', data, this.httpOptions);
+    }
+
+    reduceMemberShipDays() {
+        this.http.post('/authentication/updateMembership', this.currentUserValue, this.httpOptions).subscribe((data:any) => {
+            if(data && data.user) {
+                console.log(data)
+                let currentVal = this.currentUserValue;
+                currentVal.membership = data.user.membershipdays;
+                this.currentUserSubject.next(currentVal);
+                localStorage.setItem('currentNGOUser', JSON.stringify(currentVal));
+            }
+        })
+    }
 }

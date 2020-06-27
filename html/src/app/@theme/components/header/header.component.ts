@@ -52,9 +52,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
               private issueService: IssueService, 
               private router: Router,
               private breakpointService: NbMediaBreakpointsService) {
-                authService.currentUserSubject.subscribe((data: any) => {
-                  if(data && !data.isadmin) this.userMenu.push({ title: 'Profile' });
-                })
+                if(!this.authService.isAdmin) this.userMenu.push({ title: 'Profile' });
                 this.userMenu.push({ title: 'Log out' } );
                 if(authService.isAdmin) this.adminFuntCall();
                 else this.userFuntCall();

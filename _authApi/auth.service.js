@@ -4,12 +4,17 @@ const User = db.User;
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('../_helpers/dbconfig.json');
-
+const moment = require('moment');
+const { update } = require('../models/user.model');
 module.exports = {
     authentication,
     getById,
     createUser,
-    createAdmin
+    createAdmin,
+    UserDetailsService,
+    updateUserDetailsService,
+    userPasswordReset,
+    updateMembership
 };
 
 
@@ -24,6 +29,7 @@ async function authentication(data) {
                 isadmin: user.isadmin,
                 token
             }
+            if(!user.isadmin) userWithoutPassword.membership = user.membershipdays
             return {success: true, user: userWithoutPassword} 
         }
         else return {success: false, err: 'pwdwrg'}
@@ -38,6 +44,10 @@ async function getById(id) {
 
 async function createUser(userData) {
     // check if any field is empty
+    let checkUsername = await User.findOne({username: userData.username});
+    if(checkUsername) {
+        return {success: false, msg: "User already exists"};
+    }
     if(userData.name && userData.email && userData.mobile && userData.gender && userData.membershipdays && userData.readinghours && userData.username && userData.password) {
         let newUser = new User({
             name: userData.name,
@@ -47,6 +57,7 @@ async function createUser(userData) {
             membershipdays: userData.membershipdays,
             readinghours: userData.readinghours,
             username: userData.username,
+            referencedate: moment().format(),
         })
         newUser.password = bcrypt.hashSync(userData.password, 10);
         newUser.save();
@@ -56,6 +67,10 @@ async function createUser(userData) {
 }
 
 async function createAdmin(adminData) {
+    let checkUsername = await User.findOne({username: adminData.username});
+    if(checkUsername) {
+        return {success: false, msg: "User already exists"};
+    }
     // check if any field is empty
     if(adminData.username && adminData.password) {
         let newUser = new User({
@@ -67,4 +82,32 @@ async function createAdmin(adminData) {
         return {success: true};
     }
     return {success: false, msg: "Field missing"};
+}
+
+async function UserDetailsService(data) {
+    let userDets = await User.findOne({_id: data.id});
+    return userDets;
+}
+
+async function updateUserDetailsService(data) {
+    let updateDets = await User.updateOne({_id: data._id}, {$set: data});
+    return UserDetailsService({id: data._id});
+}
+
+async function userPasswordReset(data) {
+    let newPass = bcrypt.hashSync(data.newPassword, 10);
+    let updateDets = await User.updateOne({_id: data._id}, {$set: {password: newPass}});
+    return UserDetailsService({id: data._id});
+}
+
+async function updateMembership(data) {
+    let userDets = await User.findOne({_id: data.id});
+    let referenceDate = moment(new Date(userDets.referencedate));
+    let currentDate = moment();
+    let check = currentDate.diff(referenceDate, 'days');
+    if(check > 0) {
+        let updateUser = await User.findOneAndUpdate({_id: data.id}, {$set: {referencedate: referenceDate.add(check,'days')}, $inc: {membershipdays: -check}});
+        return {success: true, user: updateUser}
+    }
+    else return {success: false, user: userDets};
 }
