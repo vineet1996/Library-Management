@@ -9,6 +9,7 @@
                     <div class="col-sm-3 offset-1 ">Action</div>
                 </div>
             </nb-card-header>
+            <nb-alert *ngIf="requestList.length == 0 " outline="danger" style="margin: 0;">No pending request! </nb-alert>
             <nb-list>
                 <nb-list-item *ngFor="let item of requestList">
                     <div class="row col-sm-12" style="padding: 0;">
@@ -28,7 +29,8 @@
                 <div class="heading">My Issue List</div>
             </nb-card-header>
             <nb-card-body>
-                <table class="issuetable" style="width: 100%;">
+                <nb-alert *ngIf="issuedList.length == 0 " outline="danger" style="margin: 0;">No issued list! </nb-alert>
+                <table class="issuetable" style="width: 100%;" *ngIf="issuedList.length > 0">
                     <tr>
                         <th class="issueHead">Book</th>
                         <th class="issueHead">Take Home</th>

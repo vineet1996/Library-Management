@@ -5,7 +5,8 @@
                 <div class="heading">Request List</div>
             </nb-card-header>
             <nb-card-body>
-                <table class="issuetable" style="width: 100%;">
+                <nb-alert *ngIf="requestList.length == 0 " outline="danger" style="margin: 0;">No pending request! </nb-alert>
+                <table class="issuetable" style="width: 100%;" *ngIf="requestList.length > 0">
                     <tr>
                         <th class="issueHead">User</th>
                         <th class="issueHead">Book</th>
@@ -39,7 +40,8 @@
               <div class="heading">Issued List</div>
           </nb-card-header>
           <nb-card-body>
-              <table class="issuetable" style="width: 100%;">
+            <nb-alert *ngIf="issuedList.length == 0 " outline="danger" style="margin: 0;">No issued list! </nb-alert>
+              <table class="issuetable" style="width: 100%;" *ngIf="issuedList.length > 0">
                   <tr>
                       <th class="issueHead">User</th>
                       <th class="issueHead">Book</th>

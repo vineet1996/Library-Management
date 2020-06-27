@@ -5,7 +5,7 @@ import * as moment from 'moment';
   styleUrls: ['./footer.component.scss'],
   template: `
     <span class="created-by">
-      Created with ♥ by <b>VG</b> {{year}}
+      Created with ♥ {{year}}
     </span>
     
   `,
