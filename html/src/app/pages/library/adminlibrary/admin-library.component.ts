@@ -26,6 +26,7 @@ export class AdminLibraryComponent implements OnInit {
   ngOnInit() {
   }
 
+  // Function to add new book.
   addNewBook() {
     this.dialogService.open(AddBookComponent,{
       context: {
@@ -42,6 +43,7 @@ export class AdminLibraryComponent implements OnInit {
       });
   }
 
+  // Function to update existing book.
   updateBook(book) {
     this.dialogService.open(AddBookComponent,{
       context: {
@@ -58,6 +60,7 @@ export class AdminLibraryComponent implements OnInit {
       });
   }
 
+  // Function to delete existing book.
   deleteBook(book) {
     this.dialogService.open(AlertDialogComponent,{
       context: {
@@ -73,6 +76,7 @@ export class AdminLibraryComponent implements OnInit {
       });
   }
 
+  // Function to show toastr notification.
   showToast(type: NbComponentStatus, title: string, body: string) {
     const config = {
       status: type,
@@ -87,5 +91,12 @@ export class AdminLibraryComponent implements OnInit {
       body,
       title,
       config);
+  }
+
+  // Function to search for books.
+  searchText(event) {
+    this.libraryService.getSearchResults(event.target.value).subscribe(data => {
+      this.booksList = data;
+    })
   }
 }

@@ -3199,6 +3199,7 @@ class AuthenticationService {
     get isAdmin() {
         return this.currentUserValue.isadmin;
     }
+    // Service for user or admin login.
     login(data) {
         return this.http.post(`/authentication/login`, data, this.httpOptions)
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["map"])((data) => {
@@ -3210,23 +3211,27 @@ class AuthenticationService {
             return data;
         }));
     }
+    // Service for user or admin logout.
     logout() {
         localStorage.removeItem('currentNGOUser');
         this.currentUserSubject.next(null);
     }
+    // Service to get user details.
     getUserDets() {
         return this.http.post('/authentication/getUserDetails', this.currentUserValue, this.httpOptions);
     }
+    // Service to update user details.
     userUpdateDetails(data) {
         return this.http.post('/authentication/updateUser', data, this.httpOptions);
     }
+    // Service to update user password.
     userpasswordReset(data) {
         return this.http.post('/authentication/passwordReset', data, this.httpOptions);
     }
+    // Service to update user membership days.
     reduceMemberShipDays() {
         this.http.post('/authentication/updateMembership', this.currentUserValue, this.httpOptions).subscribe((data) => {
             if (data && data.user) {
-                console.log(data);
                 let currentVal = this.currentUserValue;
                 currentVal.membership = data.user.membershipdays;
                 this.currentUserSubject.next(currentVal);
@@ -3313,13 +3318,15 @@ class IssueService {
             this.getUserRequestList(authService.currentUserValue);
         }
     }
+    // All users request list for admin.
     get currentAdminIssueList() {
         return this.adminIssueList.value;
     }
+    // Specific user request list.
     get currentUserIssueList() {
         return this.userIssueList.value;
     }
-    // showing up toast 
+    // Showing up toastr notification
     showToast(type, title, body) {
         const config = {
             status: type,
@@ -3334,35 +3341,34 @@ class IssueService {
     //////////////////////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////// Socket Calls /////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////////////
-    // socket connection call
+    // Socket connection call
     setupSocketConnection() {
         let currentUser = this.authService.currentUserValue;
         this.socket = socket_io_client__WEBPACK_IMPORTED_MODULE_3__["connect"](_environments_environment__WEBPACK_IMPORTED_MODULE_4__["environment"].SOCKET_ENDPOINT, {
             query: { token: currentUser.token }
         });
     }
-    // each user joining to socket room for real time communication b/w user and admin
+    // Each user joining to socket room for real time communication b/w user and admin.
     joinRoom(roomData) {
         this.socket.emit('join-room', roomData);
     }
-    // new request of book issue to admin
+    // New request of book issue to admin.
     requestIssue(data) {
         this.socket.emit('request-issue', data);
     }
-    // socket emit by user for deleting request book issue
+    // Socket event emit by user for deleting request book issue.
     deleteRequest(issue) {
         this.socket.emit('delete-issue', issue);
     }
-    // socket emit by admin when approving book issue request 
+    // Socket event emit by admin when approving book issue request.
     approvalByAdmin(data) {
         this.socket.emit('approval-issue', data);
     }
-    // socket emit by user sending request to admin for returning book.
+    // Socket event emit by user sending request to admin for returning book.
     userReturnBook(issue) {
         this.socket.emit('return-req-book', issue);
-        // return this.http.post('/issue/userReturnBook', issue, this.httpOptions);
     }
-    // socket open for admin getting updated request lists
+    // Socket event listen for admin getting updated request lists.
     updatedReqList() {
         return rxjs__WEBPACK_IMPORTED_MODULE_2__["Observable"].create(observer => {
             this.socket.on('updated-req-list', data => {
@@ -3370,7 +3376,7 @@ class IssueService {
             });
         });
     }
-    // socket open for user getting updated request lists
+    // Socket event listen for user getting updated request lists.
     userUpdatedReqList() {
         return rxjs__WEBPACK_IMPORTED_MODULE_2__["Observable"].create(observer => {
             this.socket.on('user-updated-req-list', data => {
@@ -3378,7 +3384,7 @@ class IssueService {
             });
         });
     }
-    // socket listen to user after approval by admin
+    // Socket event listen to user after approval by admin.
     approvalReceiveUser() {
         return rxjs__WEBPACK_IMPORTED_MODULE_2__["Observable"].create(observer => {
             this.socket.on('approval-to-user', data => {
@@ -3386,7 +3392,7 @@ class IssueService {
             });
         });
     }
-    // update to all users library data
+    // Socket event listen to update to all users library data.
     updateAllUsers() {
         return rxjs__WEBPACK_IMPORTED_MODULE_2__["Observable"].create(observer => {
             this.socket.on('all-user-update-library', data => {
@@ -3395,7 +3401,7 @@ class IssueService {
         });
     }
     //////////////////////////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////// Https Calls /////////////////////////////////////////////
+    //////////////////////////////////////// Http Calls /////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////////////
     // Admin call getting all pending request from all users
     getAdminRequestList() {
@@ -3406,21 +3412,21 @@ class IssueService {
             }
         });
     }
-    // user call getting all his/her pending request 
+    // User call getting all his/her pending request.
     getUserRequestList(user) {
         this.http.post('/issue/getUserPendingRequest', user, this.httpOptions).subscribe((data) => {
             this.userIssueList.next(data);
         });
     }
-    // getting users history issued list
+    // Getting users history issued list.
     getUserDataList(data) {
         return this.http.post('/issue/getUserDataIssue', data, this.httpOptions);
     }
-    // user deleting history data
+    // User deleting history data.
     deleteOldIssuedBook(issue) {
         return this.http.post('/issue/deleteOldIssuedBook', issue, this.httpOptions);
     }
-    // all users history data to admin.
+    // All users history data to admin.
     getAdminAllOldData() {
         return this.http.get('/issue/adminAllOldData');
     }
@@ -3530,9 +3536,9 @@ function HeaderComponent_nb_action_9_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](1, "nb-user", 9);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 } if (rf & 2) {
-    const ctx_r11601 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
+    const ctx_r408 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("nbContextMenu", ctx_r11601.userMenu)("onlyPicture", ctx_r11601.userPictureOnly)("name", ctx_r11601.user == null ? null : ctx_r11601.user.username)("picture", ctx_r11601.user == null ? null : ctx_r11601.user.picture);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("nbContextMenu", ctx_r408.userMenu)("onlyPicture", ctx_r408.userPictureOnly)("name", ctx_r408.user == null ? null : ctx_r408.user.username)("picture", ctx_r408.user == null ? null : ctx_r408.user.picture);
 } }
 const _c0 = function () { return ["view", "user"]; };
 class HeaderComponent {
@@ -3685,7 +3691,7 @@ HeaderComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineCo
 /*!********************************************!*\
   !*** ./src/app/@theme/components/index.ts ***!
   \********************************************/
-/*! exports provided: HeaderComponent, FooterComponent, SearchInputComponent, TinyMCEComponent */
+/*! exports provided: FooterComponent, SearchInputComponent, TinyMCEComponent, HeaderComponent */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

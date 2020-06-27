@@ -22,11 +22,13 @@ export class LibraryComponent implements OnInit  {
 
   ngOnInit() {
     this.getLibrary();
+    
     this.issueService.updateAllUsers().subscribe(data => {
       this.getLibrary();
     })
   }
 
+  // Function to get all books.
   getLibrary() {
     this.libraryService.getAllBooks().subscribe((data:any) => {
       this.allBooks = data;

@@ -16,23 +16,29 @@ export class LibraryService {
     constructor(private http: HttpClient,) {
     }
 
-    // creating new book by admin.
+    // Creating new book by admin.
     public createBook(data) {
         return this.http.post('/book/createBook', data, this.httpOptions);
     }
 
-    // get all books for the library to all users.
+    // Get all books for the library to all users.
     public getAllBooks() {
         return this.http.get('/book/getBooks');
     }
 
-    // update book by admin.
+    // Update book by admin.
     public updateBook(data) {
         return this.http.post('/book/updateBook', data, this.httpOptions);
     }
 
-    // delete book by admin.
+    // Delete book by admin.
     public deleteBook(data) {
         return this.http.post('/book/deleteBook', data, this.httpOptions);
+    }
+
+    // Search books by string.
+    public getSearchResults(string) {
+        if(string) return this.http.get(`/book/searchResult/${string}`);
+        return this.http.get('/book/getBooks');
     }
 }

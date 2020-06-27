@@ -30,6 +30,7 @@ export class AuthenticationService {
         return this.currentUserValue.isadmin;
     }
 
+    // Service for user or admin login.
     login(data) {
         return this.http.post(`/authentication/login`, data, this.httpOptions)
         .pipe(map((data:any) => {
@@ -42,27 +43,31 @@ export class AuthenticationService {
         }));
     }
 
+    // Service for user or admin logout.
     logout() {
         localStorage.removeItem('currentNGOUser');
         this.currentUserSubject.next(null);
     }
 
+    // Service to get user details.
     getUserDets() {
         return this.http.post('/authentication/getUserDetails', this.currentUserValue, this.httpOptions);
     }
 
+    // Service to update user details.
     userUpdateDetails(data) {
         return this.http.post('/authentication/updateUser', data, this.httpOptions);
     }
 
+    // Service to update user password.
     userpasswordReset(data) {
         return this.http.post('/authentication/passwordReset', data, this.httpOptions);
     }
 
+    // Service to update user membership days.
     reduceMemberShipDays() {
         this.http.post('/authentication/updateMembership', this.currentUserValue, this.httpOptions).subscribe((data:any) => {
             if(data && data.user) {
-                console.log(data)
                 let currentVal = this.currentUserValue;
                 currentVal.membership = data.user.membershipdays;
                 this.currentUserSubject.next(currentVal);

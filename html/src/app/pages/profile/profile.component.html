@@ -14,7 +14,7 @@
                 <div class="form-group row">
                     <label for="inputEmail1" class="label col-sm-3 col-form-label">Email</label>
                     <div class="col-sm-9">
-                        <input type="email" nbInput fullWidth id="inputEmail1" disabled
+                        <input type="email" nbInput fullWidth id="inputEmail1" 
                             [(ngModel)]="updatingUserData.email">
                     </div>
                 </div>
@@ -34,14 +34,14 @@
                 <div class="form-group row">
                     <label for="inputMember" class="label col-sm-3 col-form-label">Membership (In days)</label>
                     <div class="col-sm-9">
-                        <input type="number" nbInput fullWidth id="inputMember"
+                        <input type="number" nbInput fullWidth id="inputMember" disabled
                             [(ngModel)]="updatingUserData.membershipdays">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="inputRead" class="label col-sm-3 col-form-label">Reading Hours (In hrs)</label>
                     <div class="col-sm-9">
-                        <input type="number" min="1" max="7" nbInput fullWidth id="inputRead"
+                        <input type="number" min="1" max="7" nbInput fullWidth id="inputRead" disabled
                             [(ngModel)]="updatingUserData.readinghours">
                     </div>
                 </div>

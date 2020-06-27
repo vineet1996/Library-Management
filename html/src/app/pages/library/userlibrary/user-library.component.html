@@ -1,8 +1,12 @@
-<div class="row col-sm-12" *ngIf="booksList.length > 0">
+<div class="row col-sm-12" >
     <div class="col-sm-12" >
         <nb-card>
+            <nb-card-header>
+                <input type="text" nbInput (keyup)="searchText($event)" fullWidth placeholder="Type here to search...">
+            </nb-card-header>
             <nb-card-body>
-                <nb-alert *ngIf="membershipDays && 5 > membershipDays " outline="warning" style="margin: 0;">Your Membership is expiring in 5 days</nb-alert>
+                <nb-alert *ngIf="membershipDays && 5 > membershipDays " outline="warning" style="margin: 0;">Your Membership is expiring in 5 days.</nb-alert>
+                <nb-alert *ngIf="booksList.length == 0 " outline="warning" style="margin: 0;">No search results. </nb-alert>
             </nb-card-body>
         </nb-card>
     </div>

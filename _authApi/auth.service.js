@@ -17,7 +17,7 @@ module.exports = {
     updateMembership
 };
 
-
+// Funtion for authentication of all users.
 async function authentication(data) {
     const user = await User.findOne({ username: data.username});
     if(user) {
@@ -38,10 +38,12 @@ async function authentication(data) {
     
 }
 
+// Funtion to get user by id.
 async function getById(id) {
-    return User.findById(id).select('-hash');  
+    return User.findById(id);  
 }
 
+// Funtion to create user .
 async function createUser(userData) {
     // check if any field is empty
     let checkUsername = await User.findOne({username: userData.username});
@@ -66,6 +68,7 @@ async function createUser(userData) {
     return {success: false, msg: "Field missing"};
 }
 
+// Funtion to create admin user.
 async function createAdmin(adminData) {
     let checkUsername = await User.findOne({username: adminData.username});
     if(checkUsername) {
@@ -84,22 +87,26 @@ async function createAdmin(adminData) {
     return {success: false, msg: "Field missing"};
 }
 
+// Funtion to get user details.
 async function UserDetailsService(data) {
     let userDets = await User.findOne({_id: data.id});
     return userDets;
 }
 
+// Funtion to update user details.
 async function updateUserDetailsService(data) {
     let updateDets = await User.updateOne({_id: data._id}, {$set: data});
     return UserDetailsService({id: data._id});
 }
 
+// Funtion to update user password.
 async function userPasswordReset(data) {
     let newPass = bcrypt.hashSync(data.newPassword, 10);
     let updateDets = await User.updateOne({_id: data._id}, {$set: {password: newPass}});
     return UserDetailsService({id: data._id});
 }
 
+// Funtion to update user membership days.
 async function updateMembership(data) {
     let userDets = await User.findOne({_id: data.id});
     let referenceDate = moment(new Date(userDets.referencedate));

@@ -2,13 +2,13 @@ const express = require('express');
 const router = express.Router();
 const service = require('./auth.service');
 
-router.post('/login', authenticateLogin); //API for login
-router.post('/newadmin', newadmin); // API for creating new admin 
-router.post('/newuser', newuser); //API for creating new User
-router.post('/getUserDetails', userDetails) ; //API to get user Details
-router.post('/updateUser', userUpdateDetails); // API to update User.a
-router.post('/passwordReset', passwordReset); // API to reset password
-router.post('/updateMembership', updateMembership); //API to update memberShip
+router.post('/login', authenticateLogin); //API for login.
+router.post('/newadmin', newadmin); // API for creating new admin.
+router.post('/newuser', newuser); //API for creating new User.
+router.post('/getUserDetails', userDetails) ; //API to get user Details.
+router.post('/updateUser', userUpdateDetails); // API to update User.
+router.post('/passwordReset', passwordReset); // API to reset password.
+router.post('/updateMembership', updateMembership); //API to update memberShip.
 module.exports = router;
 
 function authenticateLogin(req, res, next) {

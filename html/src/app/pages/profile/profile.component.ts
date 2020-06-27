@@ -22,6 +22,7 @@ export class ProfileComponent implements OnInit {
       newPassword: ['', [Validators.required]],
       retypeNew: ['']
     });
+    // Check if "newPassword" and "retypeNew" matches.
     this.myForm.get('retypeNew').valueChanges.subscribe(val => {
       if (val) {
         if (val != this.myForm.get('newPassword').value) {
@@ -38,6 +39,7 @@ export class ProfileComponent implements OnInit {
     this.getUserDets();
   }
 
+  // Function to get user details.
   getUserDets() {
     this.authService.getUserDets().subscribe((data: any) => {
       this.updatingUserData = data;
@@ -45,6 +47,7 @@ export class ProfileComponent implements OnInit {
     })
   }
 
+  // Function to update user details.
   updateDetails() {
     this.dialogService.open(AlertDialogComponent, {
       context: {
@@ -61,6 +64,7 @@ export class ProfileComponent implements OnInit {
       });
   }
 
+  // Function to password reset.
   passwordReset() {
     this.dialogService.open(AlertDialogComponent, {
       context: {

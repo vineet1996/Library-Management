@@ -4,6 +4,7 @@ import { AlertDialogComponent } from '../../alertdialog/alert-dialog.component';
 import { IssueService } from '../../../@service/issue.service';
 import { AuthenticationService } from '../../../@service';
 import * as moment from 'moment';
+import { LibraryService } from '../../../@service/library.service';
 
 @Component({
   selector: 'ngx-user-library',
@@ -14,20 +15,22 @@ export class UserLibraryComponent  implements OnInit{
   @Input() booksList;
   userData: any = '';
   membershipDays;
-  constructor(private dialogService: NbDialogService, private issueService: IssueService, private authService: AuthenticationService) {
+  constructor(private dialogService: NbDialogService, 
+            private issueService: IssueService, 
+            private libraryService: LibraryService, 
+            private authService: AuthenticationService) {
    
   }
 
   ngOnInit() {
     this.userData = this.authService.currentUserValue;
-    this.checktime();
-
     this.authService.reduceMemberShipDays();
     this.authService.currentUserSubject.subscribe((data: any) => {
-      this.membershipDays = data.membership;
+      if(data) this.membershipDays = data.membership;
     })
   }
 
+  // This funtion is triggered on click of "Read" or "Take home" button by user.
   async issueBook(book, takeHome) {
     let checkTime = await this.checktime();
     if (checkTime) {
@@ -42,6 +45,7 @@ export class UserLibraryComponent  implements OnInit{
     }
   }
 
+  // Function call to send issue request.
   issueFuntion(book, takeHome) {
     let title = 'Request book "' + book.name + '" to read ?'
       if (takeHome) title = 'Request book "' + book.name + '" to take home ?'
@@ -62,11 +66,19 @@ export class UserLibraryComponent  implements OnInit{
         });
   }
 
+  // Function to check issue request is done in allowed time.
   checktime() {
     const currentTime = moment().format();
     const startTime = moment("10:00", 'HH:mm').format(); // start time fixed to 10:00AM
-    const endTime = moment("15:00", 'HH:mm').format(); // end time fixed to 17:00 (5:00 PM)
+    const endTime = moment("15:00", 'HH:mm').format(); // end time fixed to 15:00 (3:00 PM)
     return moment(currentTime).isBetween(startTime, endTime);
+  }
+
+  // Function to search for books.
+  searchText(event) {
+    this.libraryService.getSearchResults(event.target.value).subscribe(data => {
+      this.booksList = data;
+    })
   }
 
 }

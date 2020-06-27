@@ -41,15 +41,17 @@ export class IssueService {
         }
     }
 
+    // All users request list for admin.
     public get currentAdminIssueList() {
         return this.adminIssueList.value;
     }
 
+    // Specific user request list.
     public get currentUserIssueList() {
         return this.userIssueList.value;
     }
 
-    // showing up toast 
+    // Showing up toastr notification
     public showToast(type: NbComponentStatus, title: string, body: string) {
         const config = {
             status: type,
@@ -69,7 +71,7 @@ export class IssueService {
     //////////////////////////////////////// Socket Calls /////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////////////
 
-    // socket connection call
+    // Socket connection call
     setupSocketConnection() {
         let currentUser = this.authService.currentUserValue;
         this.socket = io.connect(environment.SOCKET_ENDPOINT, {
@@ -77,33 +79,32 @@ export class IssueService {
         });
     }
 
-    // each user joining to socket room for real time communication b/w user and admin
+    // Each user joining to socket room for real time communication b/w user and admin.
     joinRoom(roomData) {
         this.socket.emit('join-room', roomData);
     }
 
-    // new request of book issue to admin
+    // New request of book issue to admin.
     requestIssue(data) {
         this.socket.emit('request-issue', data);
     }
 
-    // socket emit by user for deleting request book issue
+    // Socket event emit by user for deleting request book issue.
     deleteRequest(issue) {
         this.socket.emit('delete-issue', issue);
     }
 
-    // socket emit by admin when approving book issue request 
+    // Socket event emit by admin when approving book issue request.
     approvalByAdmin(data) {
         this.socket.emit('approval-issue', data);
     }
 
-    // socket emit by user sending request to admin for returning book.
+    // Socket event emit by user sending request to admin for returning book.
     userReturnBook(issue) {
         this.socket.emit('return-req-book', issue);
-        // return this.http.post('/issue/userReturnBook', issue, this.httpOptions);
     }
 
-    // socket open for admin getting updated request lists
+    // Socket event listen for admin getting updated request lists.
     updatedReqList() {
         return Observable.create(observer => {
             this.socket.on('updated-req-list', data => {
@@ -112,7 +113,7 @@ export class IssueService {
         });
     }
 
-    // socket open for user getting updated request lists
+    // Socket event listen for user getting updated request lists.
     userUpdatedReqList() {
         return Observable.create(observer => {
             this.socket.on('user-updated-req-list', data => {
@@ -123,7 +124,7 @@ export class IssueService {
 
     
 
-    // socket listen to user after approval by admin
+    // Socket event listen to user after approval by admin.
     approvalReceiveUser() {
         return Observable.create(observer => {
             this.socket.on('approval-to-user', data => {
@@ -132,7 +133,7 @@ export class IssueService {
         });
     }
 
-    // update to all users library data
+    // Socket event listen to update to all users library data.
     updateAllUsers() {
         return Observable.create(observer => {
             this.socket.on('all-user-update-library', data => {
@@ -142,7 +143,7 @@ export class IssueService {
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////// Https Calls /////////////////////////////////////////////
+    //////////////////////////////////////// Http Calls /////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////////////
 
     // Admin call getting all pending request from all users
@@ -155,24 +156,24 @@ export class IssueService {
         })
     }
 
-    // user call getting all his/her pending request 
+    // User call getting all his/her pending request.
     getUserRequestList(user) {
         this.http.post('/issue/getUserPendingRequest', user, this.httpOptions).subscribe((data: any) => {
             this.userIssueList.next(data);
         })
     }
 
-    // getting users history issued list
+    // Getting users history issued list.
     getUserDataList(data) {
         return this.http.post('/issue/getUserDataIssue', data, this.httpOptions);
     }
 
-    // user deleting history data
+    // User deleting history data.
     deleteOldIssuedBook(issue) {
         return this.http.post('/issue/deleteOldIssuedBook', issue, this.httpOptions);
     }
 
-    // all users history data to admin.
+    // All users history data to admin.
     getAdminAllOldData() {
         return this.http.get('/issue/adminAllOldData');
     }

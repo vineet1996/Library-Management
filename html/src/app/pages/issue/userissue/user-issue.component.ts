@@ -36,7 +36,7 @@ export class UserIssueComponent implements OnInit {
     });
   }
 
-  // deleting book issue request 
+  // Function to delete book issue request.
   deleteRequest(issue) {
     this.dialogService.open(AlertDialogComponent,{
       context: {
@@ -53,7 +53,7 @@ export class UserIssueComponent implements OnInit {
       });
   }
 
-  // getting users history data
+  // Funtion to get users history issued list data
   getUserAllIssuedList(){
     this.issueService.getUserDataList(this.authService.currentUserValue).subscribe((data:any) => {
       this.issuedList = data;
@@ -61,7 +61,7 @@ export class UserIssueComponent implements OnInit {
     })
   }
 
-  // changing format of timestamp to local time.
+  // Function to change format of timestamp to local time.
   filterData() {
      for(let item of this.issuedList) {
        item.requesttime = moment(item.requesttime).format('YYYY-MM-DD (HH:mm)');
@@ -70,7 +70,7 @@ export class UserIssueComponent implements OnInit {
      }
   }
 
-  // deleting old data 
+  // Function to delete old issued data. 
   deleteIssue(issue) {
     this.dialogService.open(AlertDialogComponent,{
       context: {
@@ -87,7 +87,7 @@ export class UserIssueComponent implements OnInit {
       });
   }
 
-  // book return request to admin.
+  // Function to book return request to admin.
   async returnIssue(issue) {
     let checkTime = await this.checktime(); // check for action is happening in the given time slot.
     if(checkTime) {
@@ -95,7 +95,7 @@ export class UserIssueComponent implements OnInit {
       let lateTakeHomeReturn;
       if(issue.takehome) lateTakeHomeReturn = await this.takeHomeReturnCheck(issue); // if issued to "Take Home" check if returning before 7th day of issue.
       let note = '';
-      if(lateDayReturn || lateTakeHomeReturn) note = 'There will be fine for late submission.';
+      if(lateDayReturn || lateTakeHomeReturn) note = 'You are submitting late! There will be fine for late submission.';
       this.dialogService.open(ReturnDialogComponent,{
         context: {
           title: "Return book '"+issue.book.name+"' ?",
@@ -112,24 +112,27 @@ export class UserIssueComponent implements OnInit {
     }
   }
 
+  // Function to check return request in allowed time.
   checktime() {
     const currentTime = moment();
-    const startTime = moment("10:00", 'HH:mm'); // start time fixed to 10:00AM
-    const endTime = moment("17:00", 'HH:mm'); // end time fixed to 17:00 (5:00 PM)
+    const startTime = moment("10:00", 'HH:mm'); // Start time fixed to 10:00AM
+    const endTime = moment("17:00", 'HH:mm'); // End time fixed to 17:00 (5:00 PM)
     return currentTime.isBetween(startTime, endTime); // Boolean value if return time is between 10:00 AM and 5:00 PM
   }
 
+  // Function to check return request if submission is delayed. For read books.
   oneDayReturnCheck(issue) {
     const currentTime = moment();
-    const getDate = moment(new Date(issue.issuedtime)).format("YYYY-MM-DD"); // getting issued date
-    const expectedReturnTime = moment(getDate+' 17:00', 'YYYY-MM-DD HH:mm').format(); // fixing boundry to 5:00 PM
+    const getDate = moment(new Date(issue.issuedtime)).format("YYYY-MM-DD"); // Getting issued date
+    const expectedReturnTime = moment(getDate+' 17:00', 'YYYY-MM-DD HH:mm').format(); // Fixing boundry to 5:00 PM
     return currentTime.isAfter(expectedReturnTime) ; // Boolean value return if return time exceeds issued date 5:00 PM
   }
 
+  // Function to check return request if submission is delayed. For take home books.
   takeHomeReturnCheck(issue) {
     const currentTime = moment();
-    const getDate = moment(new Date(issue.issuedtime)).add(7, 'days').format("YYYY-MM-DD"); // getting issued date and adding 7 days to it.
-    const expectedReturnTime = moment(getDate+' 17:00', 'YYYY-MM-DD HH:mm').format(); // fixing boundry to 5:00 PM
+    const getDate = moment(new Date(issue.issuedtime)).add(7, 'days').format("YYYY-MM-DD"); // Getting issued date and adding 7 days to it.
+    const expectedReturnTime = moment(getDate+' 17:00', 'YYYY-MM-DD HH:mm').format(); // Fixing boundry to 5:00 PM
     return currentTime.isAfter(expectedReturnTime) ; // Boolean value return if return time exceeds 7th day of issued date 5:00 PM
   }
 }

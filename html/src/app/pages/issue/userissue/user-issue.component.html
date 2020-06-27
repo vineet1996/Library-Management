@@ -13,7 +13,10 @@
                 <nb-list-item *ngFor="let item of requestList">
                     <div class="row col-sm-12" style="padding: 0;">
                         <div class="col-sm-8 tableHead">{{ item.book.name }}</div>
-                        <div class="col-sm-4 tableHead"> <button (click)="deleteRequest(item)" nbButton status="danger" shape='round' ghost><nb-icon icon="trash-alt" pack='regular'></nb-icon></button></div>
+                        <div class="col-sm-4 tableHead"> 
+                            <button (click)="deleteRequest(item)" *ngIf="item.pending" nbButton status="danger" shape='round' ghost><nb-icon icon="trash-alt" pack='regular'></nb-icon></button>
+                            <button *ngIf="item.returnrequest" nbButton status="danger" shape='round' disabled ghost>Pending</button>
+                        </div>
                     </div>
                 </nb-list-item>
             </nb-list>

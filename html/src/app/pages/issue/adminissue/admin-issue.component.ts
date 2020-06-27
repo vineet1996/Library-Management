@@ -27,6 +27,7 @@ export class AdminIssueComponent implements OnInit {
     });
   }
 
+  // Function to approve book.
   approvalBook(issue, approval) {
     let title = "Accept the request of '"+ issue.book.name +"' by '"+issue.user.username+"' ?";
     if(!approval) title = "Decline the request of '"+ issue.book.name +"' by '"+issue.user.username+"' ?";
@@ -48,6 +49,7 @@ export class AdminIssueComponent implements OnInit {
       });
   }
 
+  // Function to get all users issued book list.
   getAdminOldData(){
     this.issueService.getAdminAllOldData().subscribe((data:any) => {
       this.issuedList = data;
@@ -55,6 +57,7 @@ export class AdminIssueComponent implements OnInit {
     })
   }
 
+  // Function to change format of timestamp to local time.
   filterData() {
     for(let item of this.issuedList) {
       item.requesttime = moment(item.requesttime).format('YYYY-MM-DD (HH:mm)');

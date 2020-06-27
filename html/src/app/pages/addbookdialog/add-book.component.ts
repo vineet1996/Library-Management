@@ -30,7 +30,6 @@ export class AddBookComponent implements OnInit {
         publish: this.data.publish,
         stock: this.data.stock,
         takehome: this.data.takehome,
-        
       });
       this.bookForm.addControl('id', this.formBuilder.control(this.data._id));
     }
@@ -40,6 +39,7 @@ export class AddBookComponent implements OnInit {
     this.ref.close();
   }
 
+  // Function send book data to parent component.
   addBook() {
     if(this.bookForm.valid) {
       this.ref.close(this.bookForm.value);
