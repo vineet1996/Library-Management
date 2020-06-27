@@ -74,7 +74,7 @@ export class IssueService {
     // Socket connection call
     setupSocketConnection() {
         let currentUser = this.authService.currentUserValue;
-        this.socket = io.connect(environment.SOCKET_ENDPOINT, {
+        this.socket = io.connect('http://3.18.103.230:80', {
             query: { token: currentUser.token }
         });
     }
