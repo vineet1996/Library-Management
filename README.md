@@ -14,5 +14,5 @@ npm install
 # Build the project
 ng build 
 
-# Run the project
+## Run the project
 npm run dev
